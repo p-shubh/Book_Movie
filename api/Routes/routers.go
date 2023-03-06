@@ -11,6 +11,9 @@ func RoutesHandler(routes *gin.Engine) {
 
 	/* MOVIES */
 	routes.POST("/movies", controllers.PostMovies)
+	routes.GET("/movies",controllers.GetMovies)
+	routes.PUT("/movies",controllers.PutMovies)
+
 
 	routes.Run(":9090")
 }

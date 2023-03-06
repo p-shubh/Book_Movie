@@ -1,6 +1,7 @@
 package Db
 
 import (
+	"fmt"
 	"log"
 	models "restAPI/Models"
 
@@ -9,34 +10,33 @@ import (
 
 var db = DBconnnection()
 
-func InsertMoviesInDb(movieName string) uuid.UUID {
+func InsertMoviesInDb(movieName string) (uuid.UUID, error) {
 
 	var id uuid.UUID
-
-	/* Id         uuid.UUID `json:"id"`
-	Movie_name string    `json:"movieName"` */
 
 	sqlStatement := `INSERT INTO MOVIES(movie_name) VALUES($1) RETURNING id ;`
 
 	if err := db.QueryRow(sqlStatement, movieName).Scan(&id); err != nil {
-		log.Println("*********FAILED TO EXECUTE sqlStatement in InsertMoviesInDb****** ")
+		log.Println("*********FAILED TO EXECUTE sqlStatement in InsertMoviesInDb****** ", err)
+
+		return uuid.UUID{}, err
+
 	}
 
-	return id
+	return id, nil
 }
 
-func GetMoviesFromDb(id uuid.UUID) (models.Movies, error) {
+func GetMoviesFromDb(id string) (models.Movies, error) {
 
-	/* Id         uuid.UUID `json:"id"`
-	Movie_name string    `json:"movieName"` */
+	fmt.Println("***************id*********************", id)
 
 	movies := models.Movies{}
 
-	sqlStatement := `SELECT FROM MOVIES WHERE id = $1 ;`
+	sqlStatement := `SELECT id , movie_name FROM MOVIES WHERE id = $1 ;`
 
-	rows, err := db.Query(sqlStatement)
+	rows, err := db.Query(sqlStatement, id)
 	if err != nil {
-		log.Println("*********FAILED TO EXECUTE sqlStatement in GetMoviesFromDb****** ", err.Error())
+		log.Println("GetMoviesFromDb*********FAILED TO EXECUTE sqlStatement in GetMoviesFromDb****** ", err.Error())
 		return movies, err
 	}
 	defer rows.Close()
@@ -47,4 +47,18 @@ func GetMoviesFromDb(id uuid.UUID) (models.Movies, error) {
 		}
 	}
 	return movies, nil
+}
+
+func UpdateMoviesFromDb(movieName, id string) (string, error) {
+
+	sqlStatement := `UPDATE MOVIES SET movie_name =$1 WHERE id = $2 ;`
+
+	if err := db.QueryRow(sqlStatement, movieName, id); err != nil {
+		log.Println("*********FAILED TO EXECUTE sqlStatement in UpdateMoviesFromDb****** ", err)
+
+		return uuid.UUID{}.String(), err.Err()
+
+	}
+
+	return id, nil
 }
