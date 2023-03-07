@@ -15,7 +15,5 @@ func main() {
 
 	Db.DBconnnection()
 
-	var router = gin.Default()
-
-	routers.RoutesHandler(router)
+	routers.RoutesHandler(gin.Default())
 }

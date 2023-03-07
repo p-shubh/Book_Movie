@@ -8,8 +8,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-// var DB *
-
 const (
 	host     = "satao.db.elephantsql.com"
 	port     = 5432
@@ -18,7 +16,7 @@ const (
 	dbname   = "jicuanqn"
 )
 
-func DBconnnection() *sql.DB{
+func DBconnnection() *sql.DB {
 
 	/* CREATING THE CONNECTING STRING */
 	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
@@ -29,10 +27,8 @@ func DBconnnection() *sql.DB{
 	if err != nil {
 		log.Println("**************DB CONNECTION FAILED*******************")
 		log.Println(err.Error())
-		// return err
 	} else {
 		log.Println("**************DB CONNECTED SUCCESFULLY*******************")
-
 	}
 	// defer db.Close()
 	errPing := db.Ping()
@@ -40,31 +36,25 @@ func DBconnnection() *sql.DB{
 	if errPing != nil {
 		log.Println("**************DB PING STATUS*******************")
 		log.Println(errPing.Error())
-		// return errPing
 	}
-
+	/* CREATING DATABASE */
 	_, err = db.Exec(CREATEDATABASE)
 
 	if err != nil {
 		log.Println("**************CREATING DATABASE FAILED*******************")
 		log.Println(err.Error())
-		// return err
 	} else {
 		log.Println("**************DATABASE CREATED SUCCESSFULLY*******************")
-
 	}
 
+	/* CREATING TABLE */
 	_, err = db.Exec(CREATETABLE)
 
 	if err != nil {
 		log.Println("**************CREATING TABLE FAILED*******************")
 		log.Println(err.Error())
-		// return err
 	} else {
 		log.Println("**************TABLE CREATED SUCCESSFULLY*******************")
-
 	}
-	// return nil
-
 	return db
 }

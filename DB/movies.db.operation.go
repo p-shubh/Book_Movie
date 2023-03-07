@@ -1,7 +1,6 @@
 package Db
 
 import (
-	"fmt"
 	"log"
 	models "restAPI/Models"
 
@@ -18,17 +17,12 @@ func InsertMoviesInDb(movieName string) (uuid.UUID, error) {
 
 	if err := db.QueryRow(sqlStatement, movieName).Scan(&id); err != nil {
 		log.Println("*********FAILED TO EXECUTE sqlStatement in InsertMoviesInDb****** ", err)
-
 		return uuid.UUID{}, err
-
 	}
-
 	return id, nil
 }
 
 func GetMoviesFromDb(id string) (models.Movies, error) {
-
-	fmt.Println("***************id*********************", id)
 
 	movies := models.Movies{}
 
@@ -51,18 +45,10 @@ func GetMoviesFromDb(id string) (models.Movies, error) {
 
 func UpdateMoviesFromDb(movieName string, id uuid.UUID) (string, error) {
 
-	/* uuidObj, err := uuid.Parse(id)
-	if err != nil {
-		panic(err)
-	} */
-
-	fmt.Println("***********************uuidObj", id, "***************************")
-
 	sqlStatement := `UPDATE MOVIES SET movie_name =$1 WHERE id = $2 ;`
 
 	if _, err := db.Exec(sqlStatement, movieName, id.String()); err != nil {
 		log.Println("*********FAILED TO EXECUTE sqlStatement in UpdateMoviesFromDb****** ", err)
-
 		return "", err
 
 	}
@@ -72,21 +58,11 @@ func UpdateMoviesFromDb(movieName string, id uuid.UUID) (string, error) {
 
 func DeleteMoviesFromDb(id uuid.UUID) (bool, error) {
 
-	/* uuidObj, err := uuid.Parse(id)
-	if err != nil {
-		panic(err)
-	} */
-
-	fmt.Println("***********************uuidObj", id, "***************************")
-
 	sqlStatement := `DELETE FROM MOVIES WHERE id = $1 ;`
 
 	if _, err := db.Exec(sqlStatement, id); err != nil {
 		log.Println("*********FAILED TO EXECUTE sqlStatement in UpdateMoviesFromDb****** ", err)
-
 		return false, err
-
 	}
-
 	return true, nil
 }

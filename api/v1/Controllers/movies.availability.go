@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func PostMovies(c *gin.Context) {
+func PostMoviesAvailability(c *gin.Context) {
 
 	reqBody := models.Input{}
 
@@ -49,10 +49,9 @@ func PostMovies(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"result": result,
 	})
-
 }
 
-func GetMovies(c *gin.Context) {
+func GetMoviesAvailability(c *gin.Context) {
 
 	id, bools := c.GetQuery("id")
 
@@ -78,10 +77,9 @@ func GetMovies(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"result": result,
 	})
-
 }
 
-func PutMovies(c *gin.Context) {
+func UpdatetMoviesAvailability(c *gin.Context) {
 
 	reqBody := models.Input{}
 
@@ -120,10 +118,9 @@ func PutMovies(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"result": result,
 	})
-
 }
 
-func DELETEMovies(c *gin.Context) {
+func DeleteMoviesAvailability(c *gin.Context) {
 
 	reqBody := models.Input{}
 
@@ -148,11 +145,8 @@ func DELETEMovies(c *gin.Context) {
 		c.Abort()
 		return
 	} else {
-
 		c.JSON(200, gin.H{
 			"result": bools,
 		})
-
 	}
-
 }

@@ -7,7 +7,7 @@ import (
 )
 
 type Input struct {
-	MovieUUID uuid.UUID `json:"movieUUID"`
+	MovieUUID         uuid.UUID `json:"movieUUID"`
 	MovieId           string    `json:"movieId"`
 	Tickets_available int       `json:"ticketsAvailable"`
 	Price             float64   `json:"Price"`
