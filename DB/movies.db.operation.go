@@ -49,16 +49,44 @@ func GetMoviesFromDb(id string) (models.Movies, error) {
 	return movies, nil
 }
 
-func UpdateMoviesFromDb(movieName, id string) (string, error) {
+func UpdateMoviesFromDb(movieName string, id uuid.UUID) (string, error) {
+
+	/* uuidObj, err := uuid.Parse(id)
+	if err != nil {
+		panic(err)
+	} */
+
+	fmt.Println("***********************uuidObj", id, "***************************")
 
 	sqlStatement := `UPDATE MOVIES SET movie_name =$1 WHERE id = $2 ;`
 
-	if err := db.QueryRow(sqlStatement, movieName, id); err != nil {
+	if _, err := db.Exec(sqlStatement, movieName, id.String()); err != nil {
 		log.Println("*********FAILED TO EXECUTE sqlStatement in UpdateMoviesFromDb****** ", err)
 
-		return uuid.UUID{}.String(), err.Err()
+		return "", err
 
 	}
 
-	return id, nil
+	return id.String(), nil
+}
+
+func DeleteMoviesFromDb(id uuid.UUID) (bool, error) {
+
+	/* uuidObj, err := uuid.Parse(id)
+	if err != nil {
+		panic(err)
+	} */
+
+	fmt.Println("***********************uuidObj", id, "***************************")
+
+	sqlStatement := `DELETE FROM MOVIES WHERE id = $1 ;`
+
+	if _, err := db.Exec(sqlStatement, id); err != nil {
+		log.Println("*********FAILED TO EXECUTE sqlStatement in UpdateMoviesFromDb****** ", err)
+
+		return false, err
+
+	}
+
+	return true, nil
 }

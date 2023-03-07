@@ -88,15 +88,15 @@ func PutMovies(c *gin.Context) {
 	if err := c.ShouldBind(&reqBody); err != nil {
 		log.Println("*********FAILED TO BIND REQUEST BODY in PutMovies****** ")
 		c.JSON(http.StatusBadRequest, gin.H{
-			"err": err,
+			"err": err.Error(),
 		})
 		c.Abort()
 		return
 	}
 
-	fmt.Println("reqBody.Movie_name=", reqBody.Movie_name, reqBody.Id)
+	fmt.Println("reqBody.Movie_name=", reqBody.Movie_name, reqBody.MovieUUID)
 
-	id, err := Db.UpdateMoviesFromDb(reqBody.Movie_name, reqBody.MovieId)
+	id, err := Db.UpdateMoviesFromDb(reqBody.Movie_name, reqBody.MovieUUID)
 
 	if err != nil {
 		log.Println("*********FAILED in UpdateMoviesFromDb in PutMovies****** ")
@@ -120,5 +120,39 @@ func PutMovies(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"result": result,
 	})
+
+}
+
+func DELETEMovies(c *gin.Context) {
+
+	reqBody := models.Input{}
+
+	if err := c.ShouldBind(&reqBody); err != nil {
+		log.Println("*********FAILED TO BIND REQUEST BODY in PutMovies****** ")
+		c.JSON(http.StatusBadRequest, gin.H{
+			"err": err.Error(),
+		})
+		c.Abort()
+		return
+	}
+
+	fmt.Println("reqBody.Movie_name=", reqBody.Movie_name, reqBody.MovieUUID)
+
+	bools, err := Db.DeleteMoviesFromDb(reqBody.MovieUUID)
+
+	if err != nil {
+		log.Println("*********FAILED in UpdateMoviesFromDb in PutMovies****** ")
+		c.JSON(http.StatusBadRequest, gin.H{
+			"result": err,
+		})
+		c.Abort()
+		return
+	} else {
+
+		c.JSON(200, gin.H{
+			"result": bools,
+		})
+
+	}
 
 }
