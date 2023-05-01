@@ -150,3 +150,20 @@ func DELETEMovies(c *gin.Context) {
 		})
 	}
 }
+
+func GetMethod(c *gin.Context) {
+
+	queryParams := c.Request.URL.Query()
+
+	// Get the keys of the query parameters
+	keys := make([]string, 0, len(queryParams))
+	for key := range queryParams {
+		keys = append(keys, key)
+	}
+
+	keys1 := c.Request.URL.RawPath
+
+	// Do something with the keys...
+	c.String(200, "The query parameters are: %v\n", keys, keys1)
+
+}

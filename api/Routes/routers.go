@@ -14,6 +14,7 @@ func RoutesHandler(routes *gin.Engine) {
 	routes.GET("/movies",controllers.GetMovies)
 	routes.PUT("/movies",controllers.PutMovies)
 	routes.DELETE("/movies",controllers.DELETEMovies)
+	routes.GET("/getMethod",controllers.GetMethod)
 
 	routes.Run(":9090")
 }
